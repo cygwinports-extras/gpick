@@ -1,0 +1,20 @@
+DESCRIPTION="Color palette picker"
+HOMEPAGE="http://code.google.com/p/gpick/"
+SRC_URI="http://gpick.googlecode.com/files/${PN}_${PV}.tar.gz"
+PATCH_URI="0.0.34-makefile.patch"
+
+MAKEOPTS+=" EXEEXT=.exe"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	mkdir -p bin/ obj/
+	cygmake -j1 CC="${CC}" CPP="${CXX}" LD="${CXX}" USR_LDFLAGS="${LDFLAGS}"
+}
+
+src_install() {
+	cd ${B}
+	USE_DESTDIR=0 cyginstall
+
+	make_desktop_entry gpick "Color Picker" gpick "Graphics"
+}

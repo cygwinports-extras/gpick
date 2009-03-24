@@ -1,0 +1,40 @@
+--- origsrc/gpick-0.0.34/Makefile	2009-03-24 09:49:11.000000000 -0500
++++ src/gpick-0.0.34/Makefile	2009-03-24 12:50:13.796875000 -0500
+@@ -22,16 +22,18 @@ uiColorComponent.cpp uiDialogVariations.
+ uiSwatch.cpp uiUtilities.cpp uiZoomed.cpp uiDialogMix.cpp \
+ uiExport.cpp uiDialogGenerate.cpp Random.cpp
+ 
+-EXECUTABLE = bin/gpick
++EXECUTABLE = bin/gpick$(EXEEXT)
+ OBJECTS = $(SOURCES:%.cpp=$(OBJDIR)%.o)
+ RESOURCES =
+ 
++ifndef _privclassdir
+ ifeq ($(strip $(OS)),Windows_NT)
+ 	RES = windres
+ 	RESOURCE_FILES = res/resources.rc
+ 	RESOURCES = $(RESOURCE_FILES:%.rc=$(OBJDIR)%.o)
+ 	LDFLAGS += -mwindows
+ endif
++endif
+ 
+ PHONY: all
+ all: $(EXECUTABLE)
+@@ -52,7 +54,7 @@ $(OBJDIR)%.o: %.c
+      
+ .PHONY: install
+ install: all
+-	$(INSTALL) bin/gpick $(bindir)/gpick
++	$(INSTALL) bin/gpick$(EXEEXT) -D $(bindir)/gpick$(EXEEXT)
+ 	$(INSTALLDATA) res/falloff-cubic.png -D $(datadir)/gpick/falloff-cubic.png
+ 	$(INSTALLDATA) res/falloff-linear.png $(datadir)/gpick/falloff-linear.png
+ 	$(INSTALLDATA) res/falloff-none.png $(datadir)/gpick/falloff-none.png
+@@ -60,7 +62,7 @@ install: all
+ 	$(INSTALLDATA) res/falloff-exponential.png $(datadir)/gpick/falloff-exponential.png
+ 	$(INSTALLDATA) res/colors.txt $(datadir)/gpick/colors.txt
+ 	$(INSTALLDATA) res/colors0.txt $(datadir)/gpick/colors0.txt
+-	$(INSTALLDATA) res/gpick.png $(datadir)/icons/hicolor/48x48/apps/gpick.png
++	$(INSTALLDATA) res/gpick.png -D $(datadir)/icons/hicolor/48x48/apps/gpick.png
+ 
+ .PHONY: clean
+ clean:
